@@ -1,7 +1,7 @@
 import collections
 
 
-def frequency(target_items):
+def frequency(target_items, items_already_known=set(), yield_already_known=False):
     """
     Orders the learning of items based purely on frequency. Targets ordered by
     when they are achieved.
@@ -9,9 +9,19 @@ def frequency(target_items):
     The input `target_items` is a dictionary mapping targets to the
     prerequisite items.
 
+    If included, `items_already_known` is a set of items that can be assumed
+    to have already been learnt (although no assumption is made about targets
+    being seen).
+
     This is a generator that yields the target along with a set of the items
     for that target that have not yet been seen (plus any others of higher
-    frequency, even if they aren't needed by the target)
+    frequency, even if they aren't needed by the target).
+
+    If `items_already_known` is provided, there may be targets that are
+    immediately showable because they only contain items already known. These
+    are excluded by default, but will be yielded at the start if
+    `yield_already_known` is passed in as True. The order in which they are
+    yielded is just the `target_items` order.
     """
 
     # a dictionary mapping targets to a set of items still not learnt
@@ -24,13 +34,20 @@ def frequency(target_items):
     c = collections.Counter()
 
     for target, items in target_items.items():
-        c.update(items)
 
-        MISSING_IN_TARGET[target] = set(items)
-        for item in items:
+        items_to_learn = [item for item in items if item not in items_already_known]
+        c.update(items_to_learn)
+
+        MISSING_IN_TARGET[target] = set(items_to_learn)
+        for item in items_to_learn:
             TARGETS_MISSING[item].add(target)
 
     ITEMS_TO_LEARN = set()
+
+    if yield_already_known:
+        for target, items in MISSING_IN_TARGET.items():
+            if len(items) == 0:
+                yield target, items
 
     for next_item, count in c.most_common():
 
