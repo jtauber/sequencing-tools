@@ -1,7 +1,5 @@
-
 import enum
 import os.path
-
 
 ChunkType = enum.Enum("ChunkType", "book chapter verse sentence paragraph pericope")
 TokenType = enum.Enum("TokenType", "text form lemma")
@@ -19,19 +17,19 @@ chunk_data_filename = {
 chunk_data = {}  # (chunk_type, chunk_id) -> (token_start, token_end)
 chunk_ids = {}  # chunk_type -> [chunk_id]
 
+
 def load_chunk_data():
     for chunk_type, filename in chunk_data_filename.items():
         chunk_ids[chunk_type] = []
         with open(os.path.join(os.path.dirname(__file__), filename)) as f:
             for line in f:
                 chunk_id, token_start, token_end = line.strip().split()
-                chunk_data[(chunk_type, chunk_id)] = (
-                    int(token_start), int(token_end)
-                )
+                chunk_data[(chunk_type, chunk_id)] = (int(token_start), int(token_end))
                 chunk_ids[chunk_type].append(chunk_id)
 
 
 token_data = {}  # token_type -> [tokens]
+
 
 def load_tokens():
     for token_type in TokenType:
@@ -77,8 +75,7 @@ def get_tokens(token_type, chunk_type=None, chunk_id=None):
 
     else:
         raise ValueError(
-            "either both or neither of chunk_type and chunk_id"
-            "must be provided"
+            "either both or neither of chunk_type and chunk_id" "must be provided"
         )
 
 

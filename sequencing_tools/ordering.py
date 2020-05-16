@@ -151,7 +151,7 @@ def next_best(target_items):
     # and are missing from
     TARGETS_MISSING = collections.defaultdict(set)
 
-    ## fill the dictionaries with initial data based on the input
+    # fill the dictionaries with initial data based on the input
 
     for target, items in target_items.items():
         IN_TARGET[target] = set(items)
@@ -170,7 +170,7 @@ def next_best(target_items):
                 # if item is 1 of 2 missing items for a target, add 1/4
                 # if item is 1 of 3 missing items for a target, add 1/8
                 # and so on...
-                MISSING_ITEMS[item] += 1. / (2 ** len(missing))
+                MISSING_ITEMS[item] += 1.0 / (2 ** len(missing))
 
         # stop if there are no missing items
         if not MISSING_ITEMS:
