@@ -1,7 +1,7 @@
 import collections
 
 
-def frequency(target_items, items_already_known=set(), yield_already_known=False):
+def frequency(target_items, items_already_known=set(), yield_already_known=False, targets_to_ignore=set()):
     """
     Orders the learning of items based purely on frequency. Targets ordered by
     when they are achieved.
@@ -12,6 +12,11 @@ def frequency(target_items, items_already_known=set(), yield_already_known=False
     If included, `items_already_known` is a set of items that can be assumed
     to have already been learnt (although no assumption is made about targets
     being seen).
+
+    If included, `targets_to_ignore` is a set of targets not to consider. This
+    is particularly useful if there are targets already seen (whose items are
+    provided in `items_already_known` so you don't want to consider those
+    targets again).
 
     This is a generator that yields the target along with a set of the items
     for that target that have not yet been seen (plus any others of higher
@@ -34,6 +39,9 @@ def frequency(target_items, items_already_known=set(), yield_already_known=False
     c = collections.Counter()
 
     for target, items in target_items.items():
+
+        if target in targets_to_ignore:
+            continue
 
         items_to_learn = [item for item in items if item not in items_already_known]
         c.update(items_to_learn)
@@ -72,7 +80,7 @@ def frequency(target_items, items_already_known=set(), yield_already_known=False
         del TARGETS_MISSING[next_item]
 
 
-def frequency_optimised(target_items, items_already_known=set(), yield_already_known=False):
+def frequency_optimised(target_items, items_already_known=set(), yield_already_known=False, targets_to_ignore=set()):
     """
     Orders the learning of targets by firstly ordering items by frequency but
     then only requiring learning of those items required by the targets
@@ -84,6 +92,11 @@ def frequency_optimised(target_items, items_already_known=set(), yield_already_k
     If included, `items_already_known` is a set of items that can be assumed
     to have already been learnt (although no assumption is made about targets
     being seen).
+
+    If included, `targets_to_ignore` is a set of targets not to consider. This
+    is particularly useful if there are targets already seen (whose items are
+    provided in `items_already_known` so you don't want to consider those
+    targets again).
 
     This is a generator that yields the target along with a set of the items
     for that target that have not yet been seen.
@@ -111,6 +124,9 @@ def frequency_optimised(target_items, items_already_known=set(), yield_already_k
     c = collections.Counter()
 
     for target, items in target_items.items():
+
+        if target in targets_to_ignore:
+            continue
 
         IN_TARGET[target] = set(items)
 
@@ -150,7 +166,7 @@ def frequency_optimised(target_items, items_already_known=set(), yield_already_k
         del TARGETS_MISSING[next_item]
 
 
-def next_best(target_items, items_already_known=set(), yield_already_known=False):
+def next_best(target_items, items_already_known=set(), yield_already_known=False, targets_to_ignore=set()):
     """
     Orders the learning of targets based on, at each step, assigning a score to
     each unknown item and prioritising the highest scoring item next before
@@ -171,6 +187,21 @@ def next_best(target_items, items_already_known=set(), yield_already_known=False
 
     The input `target_items` is a dictionary mapping targets to the
     prerequisite items.
+
+    If included, `items_already_known` is a set of items that can be assumed
+    to have already been learnt (although no assumption is made about targets
+    being seen).
+
+    If included, `targets_to_ignore` is a set of targets not to consider. This
+    is particularly useful if there are targets already seen (whose items are
+    provided in `items_already_known` so you don't want to consider those
+    targets again).
+
+    If `items_already_known` is provided, there may be targets that are
+    immediately showable because they only contain items already known. These
+    are excluded by default, but will be yielded at the start if
+    `yield_already_known` is passed in as True. The order in which they are
+    yielded is just the `target_items` order.
     """
 
     # track the set of all items already learnt
@@ -189,6 +220,9 @@ def next_best(target_items, items_already_known=set(), yield_already_known=False
     # fill the dictionaries with initial data based on the input
 
     for target, items in target_items.items():
+
+        if target in targets_to_ignore:
+            continue
 
         IN_TARGET[target] = set(items)
 
