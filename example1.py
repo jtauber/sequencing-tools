@@ -62,8 +62,23 @@ for target, items_to_learn in islice(frequency_optimised(target_items, gjohn_ite
     print(target, get_text(target_type, target))
     print(items_to_learn)
 
-# print()
+print()
+print()
 
-# for target, items_to_learn in islice(next_best(target_items), 10):
-#     print(target, get_text(target_type, target))
-#     print(items_to_learn)
+# next_best
+
+for target, items_to_learn in islice(next_best(target_items), 5):
+    print(target, get_text(target_type, target))
+    print(items_to_learn)
+
+print()
+
+for target, items_to_learn in islice(next_best(target_items, gjohn_items), 5):
+    print(target, get_text(target_type, target))
+    print(items_to_learn)
+
+print()
+
+for target, items_to_learn in islice(next_best(target_items, gjohn_items, True), 5):
+    print(target, get_text(target_type, target))
+    print(items_to_learn)

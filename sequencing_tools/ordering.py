@@ -150,7 +150,7 @@ def frequency_optimised(target_items, items_already_known=set(), yield_already_k
         del TARGETS_MISSING[next_item]
 
 
-def next_best(target_items):
+def next_best(target_items, items_already_known=set(), yield_already_known=False):
     """
     Orders the learning of targets based on, at each step, assigning a score to
     each unknown item and prioritising the highest scoring item next before
@@ -174,7 +174,7 @@ def next_best(target_items):
     """
 
     # track the set of all items already learnt
-    ALREADY_LEARNT = set()
+    ALREADY_LEARNT = set(items_already_known)
 
     # a dictionary mapping targets to the set of prerequisite items
     IN_TARGET = {}
@@ -189,10 +189,19 @@ def next_best(target_items):
     # fill the dictionaries with initial data based on the input
 
     for target, items in target_items.items():
+
         IN_TARGET[target] = set(items)
-        MISSING_IN_TARGET[target] = set(items)
-        for item in items:
+
+        items_to_learn = [item for item in items if item not in items_already_known]
+
+        MISSING_IN_TARGET[target] = set(items_to_learn)
+        for item in items_to_learn:
             TARGETS_MISSING[item].add(target)
+
+    if yield_already_known:
+        for target, items in MISSING_IN_TARGET.items():
+            if len(items) == 0:
+                yield target, items
 
     while True:
 
