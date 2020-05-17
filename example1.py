@@ -14,6 +14,7 @@ target_type = ChunkType.verse
 
 target_items = get_tokens_by_chunk(item_type, target_type)
 
+
 def get_text(chunk_type, chunk_id):
     return " ".join(get_tokens(TokenType.text, target_type, target))
 
@@ -58,7 +59,9 @@ for target, items_to_learn in islice(frequency_optimised(target_items, gjohn_ite
 
 print()
 
-for target, items_to_learn in islice(frequency_optimised(target_items, gjohn_items, True), 5):
+for target, items_to_learn in islice(
+    frequency_optimised(target_items, gjohn_items, True), 5
+):
     print(target, get_text(target_type, target))
     print(items_to_learn)
 

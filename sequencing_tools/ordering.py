@@ -1,7 +1,12 @@
 import collections
 
 
-def frequency(target_items, items_already_known=set(), yield_already_known=False, targets_to_ignore=set()):
+def frequency(
+    target_items,
+    items_already_known=set(),
+    yield_already_known=False,
+    targets_to_ignore=set(),
+):
     """
     Orders the learning of items based purely on frequency. Targets ordered by
     when they are achieved.
@@ -80,7 +85,12 @@ def frequency(target_items, items_already_known=set(), yield_already_known=False
         del TARGETS_MISSING[next_item]
 
 
-def frequency_optimised(target_items, items_already_known=set(), yield_already_known=False, targets_to_ignore=set()):
+def frequency_optimised(
+    target_items,
+    items_already_known=set(),
+    yield_already_known=False,
+    targets_to_ignore=set(),
+):
     """
     Orders the learning of targets by firstly ordering items by frequency but
     then only requiring learning of those items required by the targets
@@ -166,7 +176,12 @@ def frequency_optimised(target_items, items_already_known=set(), yield_already_k
         del TARGETS_MISSING[next_item]
 
 
-def next_best(target_items, items_already_known=set(), yield_already_known=False, targets_to_ignore=set()):
+def next_best(
+    target_items,
+    items_already_known=set(),
+    yield_already_known=False,
+    targets_to_ignore=set(),
+):
     """
     Orders the learning of targets based on, at each step, assigning a score to
     each unknown item and prioritising the highest scoring item next before

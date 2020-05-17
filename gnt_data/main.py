@@ -68,7 +68,7 @@ def get_tokens(token_type, chunk_type=None, chunk_id=None):
         start, end = chunk_data[(chunk_type, chunk_id)]
 
         # assume token_ids are sequential starting with 1
-        return token_data[token_type][start - 1:end]
+        return token_data[token_type][start - 1 : end]  # noqa: E203
 
     elif chunk_type is None and chunk_id is None:
         return token_data[token_type]

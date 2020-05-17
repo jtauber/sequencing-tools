@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from collections import Counter
 from itertools import islice
 
 from gnt_data import ChunkType, TokenType, get_tokens, get_tokens_by_chunk
@@ -13,6 +12,7 @@ item_type = TokenType.lemma
 target_type = ChunkType.verse
 
 target_items = get_tokens_by_chunk(item_type, target_type)
+
 
 def get_text(chunk_type, chunk_id):
     return " ".join(get_tokens(TokenType.text, target_type, target))
@@ -52,6 +52,8 @@ for strategy in (frequency, frequency_optimised, next_best):
 
     items_learnt.update(items_to_learn)
     targets_seen.update({target})
-    target, items_to_learn = next(strategy(target_items, items_learnt, True, targets_seen))
+    target, items_to_learn = next(
+        strategy(target_items, items_learnt, True, targets_seen)
+    )
     print(target, get_text(target_type, target))
     print(items_to_learn)
