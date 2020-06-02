@@ -2,7 +2,7 @@ import enum
 import os.path
 
 ChunkType = enum.Enum("ChunkType", "book chapter verse sentence paragraph pericope")
-TokenType = enum.Enum("TokenType", "text form lemma")
+TokenType = enum.Enum("TokenType", "text form lemma hybrid")
 
 chunk_data_filename = {
     ChunkType.book: "books.txt",
@@ -46,6 +46,14 @@ def load_tokens():
             token_data[TokenType.text].append(text)
             token_data[TokenType.form].append(form)
             token_data[TokenType.lemma].append(lemma)
+            if pos[0] == "R":
+                token_data[TokenType.hybrid].append(form)
+            elif lemma == "εἰμί":
+                token_data[TokenType.hybrid].append(form)
+            elif pos[0] == "V":
+                token_data[TokenType.hybrid].append(lemma + "_" + tag2[0])
+            else:
+                token_data[TokenType.hybrid].append(lemma)
 
 
 load_chunk_data()
