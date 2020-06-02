@@ -15,7 +15,7 @@ target_items = get_tokens_by_chunk(item_type, target_type)
 
 
 def get_text(chunk_type, chunk_id):
-    return " ".join(get_tokens(TokenType.text, target_type, target))
+    return " ".join(get_tokens(TokenType.text, chunk_type, chunk_id))
 
 
 for strategy in (frequency, frequency_optimised, next_best):
