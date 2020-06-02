@@ -87,10 +87,10 @@ def get_tokens(token_type, chunk_type=None, chunk_id=None):
         )
 
 
-def get_tokens_by_chunk(token_type, chunk_type):
+def get_tokens_by_chunk(token_type, chunk_type, condition=lambda chunk_id: True):
     """
     Return a dictionary mapping the ids of chunks of the given `chunk_type` to
-    a list of tokens if the type `token_type` in that chunkself.
+    a list of tokens of the type `token_type` in that chunk.
 
     e.g. `get_tokens_by_chunk(TokenType.lemma, ChunkType.chapter)` will return
     a dictionary with an entry for each chapter where the key is the chapter
@@ -100,6 +100,7 @@ def get_tokens_by_chunk(token_type, chunk_type):
     return {
         chunk_id: get_tokens(token_type, chunk_type, chunk_id)
         for chunk_id in chunk_ids[chunk_type]
+        if condition(chunk_id)
     }
 
 
