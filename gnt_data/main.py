@@ -29,7 +29,7 @@ def load_chunk_data():
 
 
 token_data = {}  # token_type -> [tokens]
-
+token_dicts = []  # [{}]
 
 def load_tokens():
     for token_type in TokenType:
@@ -54,6 +54,16 @@ def load_tokens():
                 token_data[TokenType.hybrid].append(lemma + "_" + tag2[0])
             else:
                 token_data[TokenType.hybrid].append(lemma)
+            # however token dicts are also stored
+            token_dicts.append({
+                "token_id": token_id,
+                "text": text,
+                "form": form,
+                "pos": pos,
+                "tag1": tag1,
+                "tag2": tag2,
+                "lemma": lemma,
+            })
 
 
 load_chunk_data()
@@ -83,8 +93,22 @@ def get_tokens(token_type, chunk_type=None, chunk_id=None):
 
     else:
         raise ValueError(
-            "either both or neither of chunk_type and chunk_id" "must be provided"
+            "either both or neither of chunk_type and chunk_id must be provided"
         )
+
+
+def get_token_dicts(chunk_type, chunk_id):
+    """
+    Return of list of dicts with all the token information from the chunk of
+    type `chunk_type` with identifier `chunk_id`.
+
+    e.g. `get_tokens(ChunkType.verse, "640316")` means "get all the token data
+    for verse 640316"
+    """
+    start, end = chunk_data[(chunk_type, chunk_id)]
+
+    # assume token_ids are sequential starting with 1
+    return token_dicts[start - 1 : end]  # noqa: E203
 
 
 def get_tokens_by_chunk(token_type, chunk_type, condition=lambda chunk_id: True):
