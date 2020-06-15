@@ -273,7 +273,7 @@ def next_best(
         next_item = sorted(MISSING_ITEMS, key=MISSING_ITEMS.get)[-1]
 
         # for each target missing that item, remove the item
-        for target in TARGETS_MISSING[next_item]:
+        for target in sorted(TARGETS_MISSING[next_item]):
             MISSING_IN_TARGET[target].remove(next_item)
 
             # if the target is now missing no items...
