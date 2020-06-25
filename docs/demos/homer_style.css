@@ -1,0 +1,30 @@
+@import url(https://fonts.googleapis.com/css?family=Noto+Serif:400,400i,700,700i&amp;subset=greek,greek-ext,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Noto+Sans:400,700);
+
+body {
+  font-family: "Noto Serif", serif;
+  display: flex;
+  justify-content: center;
+}
+main {
+  max-width: 1000px;
+  margin: 0 5rem;
+}
+div {
+  line-height: 1.7;
+  display: flex;
+}
+div.seen {
+  color: #888;
+}
+span.ref {
+  font-family: "Noto Sans", sans-serif;
+  color: #689;
+  width: 8rem;
+  margin-right: 1rem;
+  display: inline-block;
+  text-align: right;
+}
+b {
+  background: #DFE;
+}
